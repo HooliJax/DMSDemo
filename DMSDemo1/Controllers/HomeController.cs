@@ -6,6 +6,7 @@ using System.Web.Mvc;
 
 namespace DMSDemo1.Controllers
 {
+    //comment
     public class HomeController : Controller
     {
         [Authorize]
