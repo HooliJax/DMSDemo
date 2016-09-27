@@ -9,6 +9,7 @@ namespace DMSDemo1.Controllers
     //comment in branch one
     public class HomeController : Controller
     {
+        //this is a comment
         [Authorize]
         public ActionResult Index()
         {
