@@ -1,0 +1,71 @@
+﻿@{
+    ViewBag.Title = "Home Page";
+}
+<div>
+
+    <!-- Nav tabs -->
+    <ul class="nav nav-tabs" role="tablist">
+        <li role="presentation" class="active"><a href="#first" aria-controls="first" role="tab" data-toggle="tab">Accounts</a></li>
+        <li role="presentation"><a href="#second" aria-controls="second" role="tab" data-toggle="tab">Donors</a></li>
+        <li role="presentation"><a href="#third" aria-controls="third" role="tab" data-toggle="tab">Donations</a></li>
+        <li role="presentation"><a href="#fourth" aria-controls="fourth" role="tab" data-toggle="tab">Reports</a></li>
+    </ul>
+
+    <!-- Tab panes -->
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active" id="first">
+            <div class="panel panel-default">
+                <div class="panel-heading">User Account Management</div>
+                <div class="panel-body">
+                    This tab will allow the administrator to view, add, delete, and change permissions
+                    for the users.<br />
+                    <div>
+                        @Html.Action("Register", "Account")
+                    </div>
+                    <div>
+                        <!--float this right, replace with editable list/user roles-->
+                        Manage stuff here....
+                        @Html.Action("ManageLogins", "Manage")
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="second">
+            <div class="panel panel-default">
+                <div class="panel-heading">Donor Demographic Management</div>
+                <div class="panel-body">
+                    This tab will allow the adminstrator/executive users to view, add, update, delete donors from the database.
+                    In addition, the donors will be able to be linked via familial relationships.  This tab will be limited to
+                    view only for the general users of the system.
+                </div>
+            </div>
+            @* Use this when we want to have form results: @Html.RenderAction("GetMySecondForm", "MyController")*@
+        </div>
+        <div role="tabpanel" class="tab-pane" id="third">
+            <div class="panel panel-default">
+                <div class="panel-heading">Donation Management</div>
+                <div class="panel-body">
+                    This tab will allow the administrator to view, add, delete, and change donation information including upload
+                    a check image.   The executive users will be able to view and add donations (still need to determine all
+                    permisions for the executive users.)
+                </div>
+            </div>
+        </div>
+        <div role="tabpanel" class="tab-pane" id="fourth">
+            <div class="panel panel-default">
+                <div class="panel-heading">Reports</div>
+                <div class="panel-body">
+                    This tab will allow the administrator to run reports based on a variety of critera including:<br />
+                    <ul>
+                        <li>Date range</li>
+                        <li>Zip Code</li>
+                        <li>Donation Amount</li>
+                        <li>Name</li>
+                    </ul><br />
+                    (this list is not all inclusive of reporting options)
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>
