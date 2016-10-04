@@ -1,0 +1,33 @@
+﻿@model  IEnumerable <DMSDemo1.Models.DonorInfo>
+@using GridMvc.Html
+
+@{
+    ViewBag.Title = "DonorInfo";
+}
+
+<h2>DonorInfo</h2>
+
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <link href="@Url.Content("~/Content/Gridmvc.css")" rel="stylesheet" />
+    <link href="@Url.Content("~/Content/bootstrap.min.css")" rel="stylesheet" />
+    <script src="@Url.Content("~/Scripts/jquery-1.9.1.min.js")"></script>
+</head>
+<body>
+    <div style="width:500px;">
+        @Html.Grid(Model).Columns(columns =>
+   {
+       columns.Add(c => c.Id).Titled("Client ID");
+       columns.Add(c => c.Name).Titled("Name").Filterable(true);
+       columns.Add(c => c.Email).Titled("Email");
+   }).WithPaging(3).Sortable(true)
+    </div>
+</body>
+</html>

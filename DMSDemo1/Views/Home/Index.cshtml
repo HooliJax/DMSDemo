@@ -34,10 +34,15 @@
             <div class="panel panel-default">
                 <div class="panel-heading">Donor Demographic Management</div>
                 <div class="panel-body">
+
+                    @Html.Action("Donor","Home")
+
                     This tab will allow the adminstrator/executive users to view, add, update, delete donors from the database.
                     In addition, the donors will be able to be linked via familial relationships.  This tab will be limited to
                     view only for the general users of the system.
                 </div>
+
+             
             </div>
             @* Use this when we want to have form results: @Html.RenderAction("GetMySecondForm", "MyController")*@
         </div>

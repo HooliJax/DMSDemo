@@ -1,38 +1,15 @@
-﻿using System;
-using DMSDemo1.Models;
+﻿using DMSDemo1.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using System.Web.Helpers;
 
 namespace DMSDemo1.Controllers
 {
-    //comment in branch one
-    public class HomeController : Controller
+    public class DonorInfoController : Controller
     {
-        //this is a comment over here
-        //[Authorize]
-        public ActionResult Index()
-        {
-            return View();
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
-            return View();
-        }
-
-        public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
-
-            return View();
-        }
-
-        private readonly List<DonorInfo> donors = new List<DonorInfo>()
+        private readonly List <DonorInfo>donors = new List<DonorInfo>()
     {
         new DonorInfo { Id = 1, Name = "Julio Avellaneda", Email = "julito_gtu@hotmail.com" },
         new DonorInfo { Id = 2, Name = "Juan Torres", Email = "jtorres@hotmail.com" },
@@ -43,10 +20,9 @@ namespace DMSDemo1.Controllers
         new DonorInfo { Id = 7, Name = "Johana Espitia", Email = "johana_espitia@hotmail.com" }
     };
 
-        public ActionResult Donor()
+        public ActionResult Index()
         {
             return View(donors);
         }
-
     }
 }
