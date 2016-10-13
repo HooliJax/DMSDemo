@@ -7,8 +7,11 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Owin.Security;
 using DMSDemo1.Models;
+
+
 
 namespace DMSDemo1.Controllers
 {
@@ -17,6 +20,8 @@ namespace DMSDemo1.Controllers
     {
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
+        private ApplicationDbContext context = new ApplicationDbContext();
+
 
         public AccountController()
         {
@@ -421,6 +426,142 @@ namespace DMSDemo1.Controllers
             }
 
             base.Dispose(disposing);
+        }
+
+    //This brings you to the create role page... will not be used in final product- 
+    //keep for updating data and possible superuser role while in development.
+        public ActionResult CreateRole()
+        {
+            return View();
+        }
+        // POST: /Roles/Create
+        [HttpPost]
+        public ActionResult CreateRole(FormCollection collection)
+        {
+          
+            try
+            {
+                context.Roles.Add(new Microsoft.AspNet.Identity.EntityFramework.IdentityRole()
+                {
+                    Name = collection["RoleName"]
+                });
+                context.SaveChanges();
+                ViewBag.ResultMessage = "Role created successfully !";
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+
+        public ActionResult RoleIndex()
+        {
+            var roles = context.Roles.ToList();
+            return View(roles);
+        }
+
+        public ActionResult Delete(string RoleName)
+        {
+            var thisRole = context.Roles.Where(r => r.Name.Equals(RoleName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            context.Roles.Remove(thisRole);
+            context.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+       
+        // GET: /Roles/Edit/5
+        public ActionResult EditRole(string roleName)
+        {
+            var thisRole = context.Roles.Where(r => r.Name.Equals(roleName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+
+            return View(thisRole);
+        }
+
+        //
+        // POST: /Roles/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult EditRole(Microsoft.AspNet.Identity.EntityFramework.IdentityRole role)
+        {
+            try
+            {
+                context.Entry(role).State = System.Data.Entity.EntityState.Modified;
+                context.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+            catch
+            {
+                return View();
+            }
+        }
+        public ActionResult ManageUserRoles()
+        {
+            //populate the drop down list...
+            var list = context.Roles.OrderBy(r => r.Name).ToList().Select(rr =>
+           new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+            ViewBag.Roles = list;
+            return View();
+        }
+        //this will add the role to the user- may limit to one role...
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult RoleAddToUser(string UserName, String RoleName)
+        {
+            ApplicationUser user = context.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+            var account = new AccountController();
+            account.UserManager.AddToRole(user.Id, RoleName);
+
+            ViewBag.ResultMessage = "Role Created Successfully!";
+
+            //populate the roles for the dropdown list...
+
+            var list = context.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+            ViewBag.Roles = list;
+
+            return View("ManageUserRoles");
+        }
+        // This will list any linked roles for a user- maybe set up later to allow for only one role-then this would not be necessary.
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult GetRoles(string UserName)
+        {
+            if (!string.IsNullOrWhiteSpace(UserName))
+            {
+                ApplicationUser user = context.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+                var account = new AccountController();
+
+                ViewBag.RolesForThisUser = account.UserManager.GetRoles(user.Id);
+
+                // populate roles for the view dropdown
+                var list = context.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+                ViewBag.Roles = list;
+            }
+            return View("ManageUserRoles");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult DeleteRoleForUser(string UserName, string RoleName)
+        {
+            var account = new AccountController();
+            ApplicationUser user = context.Users.Where(u => u.UserName.Equals(UserName, StringComparison.CurrentCultureIgnoreCase)).FirstOrDefault();
+
+            if (account.UserManager.IsInRole(user.Id, RoleName))
+            {
+                account.UserManager.RemoveFromRole(user.Id, RoleName);
+                ViewBag.ResultMessage = "Role successfully removed from this user!";
+            }
+            else
+            {
+                ViewBag.ResultMessage = "This user doesn't belong to selected role.";
+            }
+            // populate roles for the view dropdown
+            var list = context.Roles.OrderBy(r => r.Name).ToList().Select(rr => new SelectListItem { Value = rr.Name.ToString(), Text = rr.Name }).ToList();
+            ViewBag.Roles = list;
+
+            return View("ManageUserRoles");
         }
 
         #region Helpers

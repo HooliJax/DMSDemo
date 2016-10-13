@@ -20,11 +20,16 @@
                     This tab will allow the administrator to view, add, delete, and change permissions
                     for the users.<br />
                     <div>
-                        @Html.Action("Register", "Account")
+                        @Html.Action("Register", "Account")                  
                     </div>
                     <div>
-                        <!--float this right, replace with editable list/user roles-->
-                       
+                        @Html.Action("ManageUserRoles", "Account")
+                    </div>
+                    <div>
+                        @Html.Action("EditRole", "Account")
+                    </div>
+                    <div>
+                         @Html.Action("RoleIndex", "Account")                       
                     </div>
                 </div>
             </div>

@@ -19,7 +19,7 @@ namespace DMSDemo1.Controllers
         new DonorInfo { Id = 6, FirstName = "Warren", Middle = "F", LastName = "Buffett", Title = "Mr.", Suffix = "", CompanyName = "", Address = "", City = "Jacksonville", State = "FL", Zip = 31115, Email = "cashmoney@hotmail.com", Phone = "", Birthday = "01/22/1978", Gender = "Male", Relationship = "N/A", Identity = "" },
         new DonorInfo { Id = 7, FirstName = "Karthik", Middle = "G", LastName = "Umapathy", Title = "Mr.", Suffix = "", CompanyName = "UNF", Address = "", City = "Jacksonville", State = "FL", Zip = 31235, Email = "seniorproj@hotmail.com", Phone = "", Birthday = "02/10/1988", Gender = "Male", Relationship = "N/A", Identity = "" },
     };
-
+        
         public ActionResult Index()
         {
             return View(donors);
