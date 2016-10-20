@@ -13,7 +13,7 @@ namespace DMSDemo1.Controllers
     public class HomeController : Controller
     {
         //this is a comment over here
-        //[Authorize]
+        [Authorize]
         public ActionResult Index()
         {
             return View();
@@ -65,6 +65,15 @@ namespace DMSDemo1.Controllers
                    return new JavaScriptResult();
                }
            }
+
+        public ActionResult DisplayChart()
+        {
+            var myChart = new Chart(width: 600, height: 400).AddTitle("Donation Stats").AddSeries(chartType: "column",
+            xValue: new[] { "Wells Fargo", "Citi", "UNF", "Shands", "Dave & Assoc." },
+            yValues: new[] { "2", "6", "4", "5", "3" }).GetBytes("png");
+
+            return File(myChart, "image/bytes");
+        }
 
     }
 }
